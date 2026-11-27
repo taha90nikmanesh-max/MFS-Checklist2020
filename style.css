@@ -53,3 +53,5 @@ html[dir="rtl"] .action{justify-content:flex-start}
 html[dir="rtl"] .lesson-head,html[dir="rtl"] .lesson-content{text-align:right;direction:rtl}
 html[dir="rtl"] .lesson-head{flex-direction:row-reverse}
 @media(max-width:520px){.lesson-head{padding:17px}.lesson-content{padding:5px 17px 18px}.lesson-head h2{font-size:19px}}
+
+.lesson-dialog[open]{z-index:9999}.lesson-dialog[open]:not(:modal){position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);margin:0;max-height:85vh}.lesson-dialog[open]:not(:modal)::backdrop{background:#02070bcc}
