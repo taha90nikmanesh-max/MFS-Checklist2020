@@ -16,3 +16,5 @@ html[dir="rtl"] .action,html[dir="rtl"] .meta{text-align:right;direction:rtl}
 html[dir="rtl"] .action{justify-content:flex-start}
 
 .phase-head small{white-space:nowrap}.phase-head .phase-progress{height:4px;flex:0 0 54px;background:#293b49;border-radius:9px;overflow:hidden}.phase-head .phase-progress i{display:block;height:100%;background:var(--cyan);transition:width .25s}.check input{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}@media(max-width:520px){.phase-head{gap:8px}.phase-head .phase-progress{flex-basis:34px}}
+
+.aircraft-photo{width:100%;height:clamp(170px,28vw,300px);margin:18px 0 20px;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:linear-gradient(135deg,#1b3546,#0a141d);display:flex;align-items:center;justify-content:center}.aircraft-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 55%}.aircraft-photo span{font:11px "DM Mono";letter-spacing:.5px;color:var(--muted)}.aircraft-photo img[hidden],.aircraft-photo span[hidden]{display:none}@media print{.aircraft-photo{height:180px;break-inside:avoid}}
