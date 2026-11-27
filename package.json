@@ -1,0 +1,44 @@
+{
+  "name": "flight-deck-msfs-checklists",
+  "version": "1.0.0",
+  "description": "MSFS 2020 Standard aircraft checklist companion",
+  "main": "main.js",
+  "author": "Flight Deck",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "^34.2.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.flightdeck.msfschecklists",
+    "productName": "Flight Deck - MSFS Checklists",
+    "files": [
+      "index.html",
+      "style.css",
+      "script.js",
+      "icon.svg",
+      "manifest.webmanifest",
+      "sw.js",
+      "main.js",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
