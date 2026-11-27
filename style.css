@@ -18,3 +18,14 @@ html[dir="rtl"] .action{justify-content:flex-start}
 .phase-head small{white-space:nowrap}.phase-head .phase-progress{height:4px;flex:0 0 54px;background:#293b49;border-radius:9px;overflow:hidden}.phase-head .phase-progress i{display:block;height:100%;background:var(--cyan);transition:width .25s}.check input{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}@media(max-width:520px){.phase-head{gap:8px}.phase-head .phase-progress{flex-basis:34px}}
 
 .aircraft-photo{width:100%;height:clamp(170px,28vw,300px);margin:18px 0 20px;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:linear-gradient(135deg,#1b3546,#0a141d);display:flex;align-items:center;justify-content:center}.aircraft-photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 55%}.aircraft-photo span{font:11px "DM Mono";letter-spacing:.5px;color:var(--muted)}.aircraft-photo img[hidden],.aircraft-photo span[hidden]{display:none}@media print{.aircraft-photo{height:180px;break-inside:avoid}}
+
+.flight-log{margin:0 0 24px;padding:22px;background:linear-gradient(145deg,#15232f,#101923);border:1px solid var(--line);border-radius:7px}
+.flight-log-title h2{font-size:23px;margin:7px 0}.flight-log-title p,.history-empty{color:var(--muted);font-size:12px}
+.flight-form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:end;margin-top:18px}
+.flight-form label{display:block;margin-bottom:8px}.flight-aircraft{min-height:62px}.flight-aircraft span{display:block;padding:12px;border:1px solid var(--line);border-radius:4px;font-size:12px}
+.flight-form button{grid-column:1/-1;background:#68d9d0;color:#071318;padding:13px;border-radius:4px;font-weight:800}.flight-form button:disabled{opacity:.6}
+.flight-message{color:var(--cyan);font-size:12px;min-height:18px}.flight-history h3{font-size:14px}
+.flight-record{display:grid;grid-template-columns:1fr auto auto;gap:15px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.flight-record strong,.flight-record small{display:block}.flight-record small{color:var(--muted);font-size:10px;margin-top:5px}.flight-record>b{font:11px 'DM Mono';color:var(--cyan)}
+.flight-record button{border:1px solid var(--line);padding:7px 10px;border-radius:4px}
+@media(max-width:800px){.flight-form{grid-template-columns:1fr 1fr}}@media(max-width:520px){.flight-form{grid-template-columns:1fr}.flight-record{grid-template-columns:1fr auto}.flight-record button{grid-column:2;grid-row:1}.flight-record>b{grid-column:1}}
