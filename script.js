@@ -180,7 +180,7 @@ const purposeMap=[
 [/landing|فرود/i,["Landing is the transition from flight to ground movement. The aircraft-specific checklist and simulator indications should guide this phase.","فرود مرحله گذر از پرواز به حرکت روی زمین است. چک‌لیست مخصوص هواپیما و نشانگرهای شبیه‌ساز راهنمای این مرحله هستند."]],
 [/shutdown|خاموش|secure aircraft|ایمن.?سازی/i,["This places the aircraft in its intended parked and secured state after the flight, following the modeled aircraft checklist.","این بخش پس از پرواز هواپیما را طبق چک‌لیست شبیه‌سازی‌شده در وضعیت پارک و ایمن قرار می‌دهد."]]
 ];
-let purpose=faMode?"این مورد بخشی از بررسی "+(fa(phases[phaseIndex])||phases[phaseIndex])+" است.":"This item is part of the "+phases[phaseIndex]+" phase.";
+let purpose=faMode?"این مورد بخشی از بررسی "+(fa[phases[phaseIndex]]||phases[phaseIndex])+" است.":"This item is part of the "+phases[phaseIndex]+" phase.";
 for(const [pattern,copy] of purposeMap){if(pattern.test(action)){purpose=copy[faMode?1:0];break}}
 const howFa="۱) محل معرفی‌شده در بخش «محل کنترل» را در کابین یا رابط شبیه‌ساز پیدا کن. ۲) وضعیت فعلی کلید، اهرم یا نمایشگر را نگاه کن. ۳) دستور این مورد: "+tr(instruction)+" ۴) نتیجه را از نشانگر یا پیام مربوط بررسی کن. اگر کنترل در مدل هواپیما وجود ندارد، آن را حدس نزن و از چک‌لیست داخل بازی پیروی کن.";
 const howEn="1) Find the panel or simulator interface named in the control-location line. 2) Check the current switch, lever or display state. 3) Checklist instruction: "+instruction+" 4) Verify the result using the relevant indication or message. If the control is not modeled, do not guess—use the aircraft's in-game checklist.";
