@@ -182,8 +182,8 @@ const purposeMap=[
 ];
 let purpose=faMode?"این مورد بخشی از بررسی "+(fa(phases[phaseIndex])||phases[phaseIndex])+" است.":"This item is part of the "+phases[phaseIndex]+" phase.";
 for(const [pattern,copy] of purposeMap){if(pattern.test(action)){purpose=copy[faMode?1:0];break}}
-const howFa="۱) محل معرفی‌شده در بخش «محل کنترل» را در کابین یا رابط شبیه‌ساز پیدا کن. ۲) وضعیت فعلی کلید، اهرم یا نمایشگر را نگاه کن. ۳) فقط همان کاری را که در توضیح چک‌لیست همین هواپیما آمده انجام بده. ۴) نتیجه را از نشانگر یا پیام مربوط بررسی کن. اگر کنترل در مدل هواپیما وجود ندارد، آن را حدس نزن و از چک‌لیست داخل بازی پیروی کن.";
-const howEn="1) Find the panel or simulator interface named in the control-location line. 2) Check the current switch, lever or display state. 3) Follow the instruction shown for this aircraft only. 4) Verify the result using the relevant indication or message. If the control is not modeled, do not guess—use the aircraft's in-game checklist.";
+const howFa="۱) محل معرفی‌شده در بخش «محل کنترل» را در کابین یا رابط شبیه‌ساز پیدا کن. ۲) وضعیت فعلی کلید، اهرم یا نمایشگر را نگاه کن. ۳) دستور این مورد: "+tr(instruction)+" ۴) نتیجه را از نشانگر یا پیام مربوط بررسی کن. اگر کنترل در مدل هواپیما وجود ندارد، آن را حدس نزن و از چک‌لیست داخل بازی پیروی کن.";
+const howEn="1) Find the panel or simulator interface named in the control-location line. 2) Check the current switch, lever or display state. 3) Checklist instruction: "+instruction+" 4) Verify the result using the relevant indication or message. If the control is not modeled, do not guess—use the aircraft's in-game checklist.";
 document.querySelector("#lessonEyebrow").textContent=faMode?"آموزش مرحله‌به‌مرحله":"FLIGHT DECK ACADEMY";
 document.querySelector("#lessonTitle").textContent=faMode?tr(action):action;
 document.querySelector("#lessonAircraft").textContent=a[0]+" · "+(faMode?tr(phases[phaseIndex]):phases[phaseIndex]);
