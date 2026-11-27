@@ -15,6 +15,17 @@ Every push to `main` that changes the app files starts the **Build Windows Deskt
 
 The installer is built by GitHub Actions; it is not committed to the source repository.
 
+## Android APK
+Every push to `main` that changes the app files starts the **Build Android APK** workflow.
+
+1. Open the repository's **Actions** tab.
+2. Select the latest **Build Android APK** run.
+3. Wait for the run to finish successfully.
+4. Download the **Flight-Deck-Android-APK** artifact.
+5. Extract the ZIP and install `app-debug.apk` on your Android phone. Android may ask you to allow installation from that source.
+
+This is a debug APK for personal testing, not a Play Store release. The APK is produced by GitHub Actions and is not committed to the repository.
+
 ## Install as a browser app (optional)
 The repository also includes a web app manifest and offline service worker. After enabling GitHub Pages with **Settings → Pages → Build and deployment → GitHub Actions**, open the published HTTPS site in Edge or Chrome and use the browser's **Install app** option.
 
