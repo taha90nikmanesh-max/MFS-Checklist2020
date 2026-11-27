@@ -1,15 +1,21 @@
 {
   "name": "flight-deck-msfs-checklists",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "MSFS 2020 Standard aircraft checklist companion",
   "main": "main.js",
   "author": "Flight Deck",
   "license": "UNLICENSED",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder --win nsis"
+    "dist": "electron-builder --win nsis",
+    "android:prepare": "node -e \"require('fs').mkdirSync('www',{recursive:true}); for (const f of ['index.html','style.css','script.js','icon.svg','manifest.webmanifest','sw.js']) require('fs').copyFileSync(f,'www/'+f)\" && cap sync android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.4.3",
+    "@capacitor/core": "^7.4.3"
   },
   "devDependencies": {
+    "@capacitor/cli": "^7.4.3",
     "electron": "^34.2.0",
     "electron-builder": "^26.0.12"
   },
