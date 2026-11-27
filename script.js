@@ -74,11 +74,11 @@ special[4][11]=[
 ["Departure / arrival","GTC · Procedures","Review available departure, arrival and approach procedures."],
 ["Route review","PFD / MFD","Confirm the active navigation source and displayed route."]
 ];
-for (const i of [5,6,16,17]) special[i][11]=[
+for (const i of [5,6,16,17]) { special[i] = special[i] || {}; special[i][11]=[
 ["FPL flight plan","G1000 / Garmin · FPL","Create or load the route and review waypoint sequence."],
 ["PROC procedures","G1000 / Garmin · PROC","Review available departure, arrival or approach procedures if modeled."],
 ["Map and navigation source","PFD / MFD","Check route depiction and confirm the intended navigation source."]
-];
+]; }
 special[14][11]=[
 ["Flight plan","King Air Garmin avionics · FPL","Review or enter the route using the flight-plan pages available in the simulator."],
 ["Procedures","Garmin avionics · PROC","Review available procedures if supported by the modeled avionics."],
