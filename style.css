@@ -98,3 +98,9 @@ html[dir="rtl"] .lesson-head{flex-direction:row-reverse}
 .info-disclaimer{border-top:1px solid var(--line);padding-top:15px;color:var(--muted);font-size:10px;line-height:1.8}
 @media(max-width:700px){.aircraft-spec-grid{grid-template-columns:1fr 1fr}.aircraft-info-columns{grid-template-columns:1fr}.aircraft-info-top{flex-direction:column}}
 @media(max-width:520px){.aircraft-info-panel{padding:16px}.aircraft-spec-grid strong{font-size:12px}}
+
+/* Global UTC clock and compact checklist toolbar */
+.top{gap:18px}.global-utc{display:flex;align-items:center;gap:10px;padding:7px 12px;border:1px solid var(--line);border-radius:5px;background:#0b151e}.global-utc small{font:9px "DM Mono";color:var(--muted);letter-spacing:.7px}.global-utc strong{font:16px "DM Mono";color:var(--cyan);letter-spacing:1px}.global-utc span{font:9px "DM Mono";color:var(--muted)}
+.checklist-toolbar{display:grid;grid-template-columns:minmax(190px,1fr) minmax(220px,1.5fr) auto;gap:12px;align-items:end;margin-bottom:8px}.checklist-toolbar .aircraft-picker{height:100%}.checklist-search label{display:block;margin:0 0 7px;color:var(--cyan);font:9px "DM Mono";letter-spacing:.7px}.checklist-search input{height:39px}.checklist-toolbar .secondary{height:39px;width:auto;white-space:nowrap;padding:0 14px}.checklist-toolbar+.saved{margin:8px 0 18px}.heading{grid-template-columns:minmax(0,1fr) auto}
+@media(max-width:800px){.top{height:auto;min-height:70px;flex-wrap:wrap;padding:12px 5vw}.global-utc{order:3;width:100%;justify-content:center}.checklist-toolbar{grid-template-columns:1fr 1fr}.checklist-search{grid-column:1/-1}.checklist-toolbar .secondary{width:100%}}
+@media(max-width:520px){.checklist-toolbar{grid-template-columns:1fr}.checklist-search{grid-column:auto}.global-utc{gap:7px}.global-utc strong{font-size:14px}}
