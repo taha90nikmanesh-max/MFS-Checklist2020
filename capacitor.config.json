@@ -1,0 +1,8 @@
+{
+  "appId": "com.flightdeck.msfschecklists",
+  "appName": "Flight Deck",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}
