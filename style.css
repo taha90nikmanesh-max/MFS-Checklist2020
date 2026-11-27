@@ -33,3 +33,23 @@ html[dir="rtl"] .action{justify-content:flex-start}
 [hidden]{display:none!important}.page-nav{display:flex;gap:10px;justify-content:center;margin:0 auto 28px}.page-tab{border:1px solid var(--line);padding:12px 24px;border-radius:5px;color:var(--muted);font-weight:700}.page-tab.active{background:var(--cyan);color:#071318;border-color:var(--cyan)}.journal-intro{text-align:center;margin:10px auto 28px}.journal-intro>label{color:var(--cyan);font:10px "DM Mono";letter-spacing:1px}.journal-intro h1{font-size:clamp(34px,5vw,54px);margin:8px 0}.journal-intro p{color:var(--muted);font-size:13px}.flight-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}.flight-summary>div{background:#0b151e;border:1px solid var(--line);border-radius:5px;padding:15px}.flight-summary small,.flight-summary strong{display:block}.flight-summary small{font:9px "DM Mono";color:var(--muted);letter-spacing:.5px}.flight-summary strong{font:19px "DM Mono";color:var(--cyan);margin-top:8px}.flight-record>b{max-width:220px;text-align:end;line-height:1.7}@media(max-width:520px){.page-tab{flex:1;padding:11px 8px}.flight-summary{grid-template-columns:1fr}.flight-record>b{max-width:none;text-align:start}}
 
 .pilot-level-card #pilotLevel{font:16px Manrope,sans-serif;line-height:1.5}.pilot-level-card #pilotLevelDetail{display:block;color:var(--muted);font-size:10px;margin-top:6px}.level-track{height:5px;background:#293b49;border-radius:8px;overflow:hidden;margin-top:10px}.level-track i{display:block;height:100%;width:0;background:var(--cyan);transition:width .25s}
+
+/* Per-item training lessons */
+.lessonBtn{display:inline-flex;align-items:center;margin-top:9px;padding:6px 12px;border:1px solid #68d9d0;border-radius:4px;color:#68d9d0;font:10px "DM Mono";letter-spacing:.3px}
+.lessonBtn:hover{background:#68d9d018;color:#a2fff3}
+.lesson-dialog{width:min(680px,calc(100% - 28px));max-height:85vh;padding:0;border:1px solid #3b5667;border-radius:9px;background:#111c27;color:#edf4f7;box-shadow:0 25px 90px #000b}
+.lesson-dialog::backdrop{background:#02070bcc;backdrop-filter:blur(4px)}
+.lesson-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;padding:22px 24px;border-bottom:1px solid #293b49;background:linear-gradient(130deg,#183344,#111c27)}
+.lesson-head small{font:10px "DM Mono";color:#68d9d0;letter-spacing:1px}
+.lesson-head h2{font-size:23px;margin:9px 0 5px}
+.lesson-head p{font-size:11px;color:#91a4b2;margin:0}
+.lesson-head button{border:1px solid #405565;border-radius:4px;padding:8px 11px;font-size:14px}
+.lesson-content{padding:8px 24px 24px;overflow:auto}
+.lesson-content section{padding:15px 0;border-bottom:1px solid #293b49}
+.lesson-content h3{font-size:13px;color:#68d9d0;margin:0 0 8px}
+.lesson-content p{font-size:12px;line-height:1.9;color:#d0dce2;margin:0}
+.lesson-content .lesson-note{border:1px solid #5a4a32;background:#211d17;border-radius:5px;padding:13px;margin-top:14px}
+.lesson-content .lesson-note h3{color:#e8bb72}
+html[dir="rtl"] .lesson-head,html[dir="rtl"] .lesson-content{text-align:right;direction:rtl}
+html[dir="rtl"] .lesson-head{flex-direction:row-reverse}
+@media(max-width:520px){.lesson-head{padding:17px}.lesson-content{padding:5px 17px 18px}.lesson-head h2{font-size:19px}}
