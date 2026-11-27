@@ -8,7 +8,7 @@
 <div><label for="origin">مبدأ (Airport code)</label><input id="origin" required maxlength="80" placeholder="IKA"></div>
 <div><label for="destination">مقصد (Airport code)</label><input id="destination" required maxlength="80" placeholder="IST"></div>
 <div><label for="flightDate">تاریخ و ساعت پرواز</label><input id="flightDate" type="datetime-local" required></div>
-<div class="flight-aircraft"><label>هواپیما</label><span id="flightAircraftName">Airbus A320neo</span></div>
+<div class="flight-aircraft"><label for="flightAircraft">انتخاب نوع هواپیما</label><select id="flightAircraft"></select></div>
 <button type="submit" id="saveFlight">محاسبه فاصله و ثبت پرواز</button>
 </form>
 <p id="flightMessage" class="flight-message" aria-live="polite"></p>
