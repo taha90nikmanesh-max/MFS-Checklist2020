@@ -104,3 +104,16 @@ html[dir="rtl"] .lesson-head{flex-direction:row-reverse}
 .checklist-toolbar{display:grid;grid-template-columns:minmax(190px,1fr) minmax(220px,1.5fr) auto;gap:12px;align-items:end;margin-bottom:8px}.checklist-toolbar .aircraft-picker{height:100%}.checklist-search label{display:block;margin:0 0 7px;color:var(--cyan);font:9px "DM Mono";letter-spacing:.7px}.checklist-search input{height:39px}.checklist-toolbar .secondary{height:39px;width:auto;white-space:nowrap;padding:0 14px}.checklist-toolbar+.saved{margin:8px 0 18px}.heading{grid-template-columns:minmax(0,1fr) auto}
 @media(max-width:800px){.top{height:auto;min-height:70px;flex-wrap:wrap;padding:12px 5vw}.global-utc{order:3;width:100%;justify-content:center}.checklist-toolbar{grid-template-columns:1fr 1fr}.checklist-search{grid-column:1/-1}.checklist-toolbar .secondary{width:100%}}
 @media(max-width:520px){.checklist-toolbar{grid-template-columns:1fr}.checklist-search{grid-column:auto}.global-utc{gap:7px}.global-utc strong{font-size:14px}}
+
+/* Independent aircraft selector and takeoff reference panel on Aircraft Info page */
+.info-aircraft-picker{max-width:360px;margin-top:22px}
+.info-aircraft-picker label{display:block;margin-bottom:8px;color:var(--cyan);font:10px "DM Mono";letter-spacing:.7px}
+.info-aircraft-picker select{width:100%;padding:11px;background:#0b151e;border:1px solid var(--line);border-radius:5px;color:var(--text)}
+.takeoff-speeds{margin:20px 0;padding:18px;background:#0b151e;border:1px solid var(--line);border-radius:6px}
+.takeoff-speeds h3{font-size:14px;color:var(--cyan);margin:0 0 12px}
+.takeoff-speed-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.takeoff-speed-grid>div{padding:14px;border:1px solid var(--line);border-radius:5px;background:#111e29}
+.takeoff-speed-grid small{display:block;color:var(--muted);font:11px "DM Mono"}
+.takeoff-speed-grid strong{display:block;color:var(--gold);font:16px "DM Mono";margin-top:8px}
+.takeoff-speeds>p{font-size:10px;line-height:1.8;color:var(--muted);margin:12px 0 0}
+@media(max-width:520px){.takeoff-speed-grid{grid-template-columns:1fr}}
