@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder --win nsis",
+    "dist": "electron-builder --win nsis --publish never",
     "android:prepare": "node -e \"require('fs').mkdirSync('www',{recursive:true}); for (const f of ['index.html','style.css','script.js','icon.svg','manifest.webmanifest','sw.js']) require('fs').copyFileSync(f,'www/'+f)\" && cap sync android"
   },
   "dependencies": {
