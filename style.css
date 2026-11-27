@@ -77,3 +77,24 @@ html[dir="rtl"] .lesson-head{flex-direction:row-reverse}
 .rating-badge small{font-size:9px;color:var(--muted);line-height:1.5}
 @media(max-width:800px){.flight-form{grid-template-columns:1fr 1fr}.rating-badges{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.flight-form{grid-template-columns:1fr}.ratings-heading{align-items:flex-start;flex-direction:column}.rating-score{text-align:start}.rating-badges{grid-template-columns:1fr 1fr}}
+
+.heading{display:grid;grid-template-columns:minmax(0,1fr) minmax(190px,245px) auto;gap:18px;align-items:center}
+.aircraft-picker{min-width:0;padding:10px 12px;background:#0b151e;border:1px solid var(--line);border-radius:5px}
+.aircraft-picker label{display:block;margin-bottom:7px;color:var(--cyan);font:9px "DM Mono";letter-spacing:.7px}
+.aircraft-picker select{padding:10px;font-size:11px}.aircraft-heading-main{min-width:0}
+@media(max-width:800px){.heading{grid-template-columns:minmax(0,1fr) auto}.aircraft-picker{grid-column:1/-1;grid-row:2}.heading .percent{grid-column:2;grid-row:1}}
+@media(max-width:520px){.heading{grid-template-columns:1fr auto;gap:10px}.aircraft-picker{grid-column:1/-1;grid-row:2}}
+.aircraft-info-panel{padding:24px;background:linear-gradient(145deg,#15232f,#101923);border:1px solid var(--line);border-radius:8px}
+.aircraft-info-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.aircraft-info-top small{font:10px "DM Mono";letter-spacing:1px;color:var(--cyan)}.aircraft-info-top h2{font-size:clamp(24px,4vw,36px);margin:8px 0}.aircraft-info-top p{font-size:12px;color:var(--muted);margin:0}
+.info-class-chip{border:1px solid #466071;border-radius:20px;padding:8px 12px;color:var(--gold);font-size:10px}
+.aircraft-spec-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:20px 0}
+.aircraft-spec-grid>div{background:#0b151e;border:1px solid var(--line);border-radius:5px;padding:15px}
+.aircraft-spec-grid small,.info-fact small{display:block;color:var(--muted);font:9px "DM Mono";letter-spacing:.6px}
+.aircraft-spec-grid strong{display:block;color:var(--cyan);font-size:14px;line-height:1.6;margin-top:8px}
+.aircraft-info-columns{display:grid;grid-template-columns:1fr 1fr;gap:25px}.aircraft-info-columns section{padding:12px 0}
+.aircraft-info-columns h3{font-size:15px;color:var(--cyan);margin:0 0 12px}.aircraft-info-columns p,.aircraft-info-columns li{font-size:12px;line-height:1.9;color:#c4d1d9}
+.aircraft-info-columns ul{padding-inline-start:20px;margin:0}.info-fact{margin-top:15px;padding:12px;border:1px solid var(--line);border-radius:5px}.info-fact strong{display:block;font-size:12px;margin-top:6px}
+.info-disclaimer{border-top:1px solid var(--line);padding-top:15px;color:var(--muted);font-size:10px;line-height:1.8}
+@media(max-width:700px){.aircraft-spec-grid{grid-template-columns:1fr 1fr}.aircraft-info-columns{grid-template-columns:1fr}.aircraft-info-top{flex-direction:column}}
+@media(max-width:520px){.aircraft-info-panel{padding:16px}.aircraft-spec-grid strong{font-size:12px}}
