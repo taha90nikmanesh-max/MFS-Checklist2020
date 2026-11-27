@@ -146,7 +146,7 @@ Object.assign(fa,{
 });
 
 
-const select=document.querySelector("#aircraft"),search=document.querySelector("#search"),phaseHost=document.querySelector("#phases");let isFa=false;
+const select=document.querySelector("#aircraft"),search=document.querySelector("#search"),phaseHost=document.querySelector("#phases");let isFa=true;
 aircraft.forEach((a,i)=>{const o=document.createElement("option");o.value=i;o.textContent=a[0];select.append(o)});
 let current=0,checks={};try{checks=JSON.parse(localStorage.getItem("fd-msfs-checks")||"{}")}catch(e){checks={}}
 function key(i,p,j){return i+"-"+p+"-"+j}
