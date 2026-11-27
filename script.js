@@ -146,11 +146,57 @@ Object.assign(fa,{
 });
 
 
+Object.assign(fa,{
+"Battery 1 & 2":"باتری ۱ و ۲","External power":"برق خارجی","Fuel pumps":"پمپ‌های سوخت","APU MASTER":"کلید اصلی APU","APU START":"استارت APU","APU BLEED":"بلید هوای APU","MCDU / flight plan":"MCDU و برنامه پرواز","Thrust levers":"اهرم‌های گاز","Beacon light":"چراغ بیکن","Engine mode selector":"انتخاب‌گر حالت موتور","Engine Master 2":"کلید اصلی موتور شماره ۲","Engine Master 1":"کلید اصلی موتور شماره ۱",
+"Overhead · ELEC panel":"پنل بالاسری · برق","Overhead · EXT PWR":"پنل بالاسری · برق خارجی","Overhead · FUEL panel":"پنل بالاسری · سوخت","Overhead · APU panel":"پنل بالاسری · APU","Overhead · AIR panel":"پنل بالاسری · سیستم هوا","Center pedestal · MCDU":"کنسول مرکزی · MCDU","Center pedestal":"کنسول مرکزی","Overhead · EXT LT panel":"پنل بالاسری · چراغ‌های بیرونی","Overhead · ENG panel":"پنل بالاسری · موتور",
+"Switch both batteries ON and confirm the electrical indications in the simulator.":"هر دو باتری را در شبیه‌ساز روشن کن و نشانگرهای برق را بررسی کن.",
+"If external power is available, connect it and verify the AVAIL indication.":"اگر برق خارجی در دسترس است، آن را وصل کن و نشانگر AVAIL را بررسی کن.",
+"Switch the required fuel pumps ON before APU start. Check center-tank pump use against the simulated fuel load.":"پمپ‌های سوخت موردنیاز را پیش از استارت APU روشن کن. استفاده از پمپ‌های مخزن مرکزی را با مقدار سوخت شبیه‌ساز تطبیق بده.",
+"Set APU MASTER ON and confirm the APU indications.":"کلید APU MASTER را روشن کن و نشانگرهای APU را بررسی کن.",
+"Start the APU and wait for the AVAIL indication.":"APU را استارت کن و تا روشن شدن نشانگر AVAIL صبر کن.",
+"Set APU BLEED ON when APU is available.":"پس از آماده شدن APU، کلید APU BLEED را روشن کن.",
+"Confirm the route and required simulator flight setup have been reviewed.":"مطمئن شو مسیر و تنظیمات لازم پرواز در شبیه‌ساز بازبینی شده‌اند.",
+"Confirm the parking brake is set.":"از فعال بودن ترمز پارک مطمئن شو.",
+"Confirm both thrust levers are at IDLE.":"مطمئن شو هر دو اهرم گاز روی IDLE هستند.",
+"Set BEACON ON before engine start.":"پیش از استارت موتورها، چراغ بیکن را روشن کن.",
+"Select IGN/START when ready to begin the simulated engine start.":"وقتی آماده شروع استارت در شبیه‌ساز هستی، حالت IGN/START را انتخاب کن.",
+"Disconnect external power when APU electrical supply is established; confirm EXT PWR is no longer supplying the aircraft.":"پس از برقرار شدن برق APU، برق خارجی را جدا کن و مطمئن شو دیگر برق هواپیما را تأمین نمی‌کند.",
+"Verify the required fuel pumps remain ON for engine start.":"بررسی کن پمپ‌های سوخت موردنیاز برای استارت روشن باقی مانده باشند.",
+"Confirm IGN/START is selected for the simulated start.":"بررسی کن برای استارت شبیه‌سازی‌شده حالت IGN/START انتخاب شده باشد.",
+"Set ENG 2 MASTER ON and monitor the engine indications until stable.":"ENG 2 MASTER را روشن کن و نشانگرهای موتور شماره ۲ را تا پایدار شدن زیر نظر بگیر.",
+"Set ENG 1 MASTER ON and monitor the engine indications until stable.":"ENG 1 MASTER را روشن کن و نشانگرهای موتور شماره ۱ را تا پایدار شدن زیر نظر بگیر.",
+"After both engines are stable, return the selector to NORM.":"پس از پایدار شدن هر دو موتور، انتخاب‌گر را به NORM برگردان.",
+"After engine bleed supply is available, set APU BLEED OFF.":"پس از در دسترس قرار گرفتن هوای بلید موتورها، APU BLEED را خاموش کن.",
+"When the aircraft is supplied by its engine generators, switch APU MASTER OFF if no longer needed.":"وقتی ژنراتورهای موتورها برق هواپیما را تأمین می‌کنند و دیگر به APU نیاز نیست، APU MASTER را خاموش کن."
+});
 const select=document.querySelector("#aircraft"),search=document.querySelector("#search"),phaseHost=document.querySelector("#phases");let isFa=false;
 aircraft.forEach((a,i)=>{const o=document.createElement("option");o.value=i;o.textContent=a[0];select.append(o)});
 let current=0,checks={};try{checks=JSON.parse(localStorage.getItem("fd-msfs-checks")||"{}")}catch(e){checks={}}
 function key(i,p,j){return i+"-"+p+"-"+j}
-function itemsFor(i,p){if(p===1)return special[i]&&special[i][11]?special[i][11]:[];const sourcePhase=p===0?0:p-1;return (special[i]&&special[i][sourcePhase])?[...generic[sourcePhase],...special[i][sourcePhase]]:generic[sourcePhase]}
+const a320BeforeStart=[
+["Battery 1 & 2","Overhead · ELEC panel","Switch both batteries ON and confirm the electrical indications in the simulator."],
+["External power","Overhead · EXT PWR","If external power is available, connect it and verify the AVAIL indication."],
+["Fuel pumps","Overhead · FUEL panel","Switch the required fuel pumps ON before APU start. Check center-tank pump use against the simulated fuel load."],
+["APU MASTER","Overhead · APU panel","Set APU MASTER ON and confirm the APU indications."],
+["APU START","Overhead · APU panel","Start the APU and wait for the AVAIL indication."],
+["APU BLEED","Overhead · AIR panel","Set APU BLEED ON when APU is available."],
+["MCDU / flight plan","Center pedestal · MCDU","Confirm the route and required simulator flight setup have been reviewed."],
+["Parking brake","Center pedestal","Confirm the parking brake is set."],
+["Thrust levers","Center pedestal","Confirm both thrust levers are at IDLE."],
+["Beacon light","Overhead · EXT LT panel","Set BEACON ON before engine start."],
+["Engine mode selector","Center pedestal","Select IGN/START when ready to begin the simulated engine start."]
+];
+const a320EngineStart=[
+["External power","Overhead · ELEC panel","Disconnect external power when APU electrical supply is established; confirm EXT PWR is no longer supplying the aircraft."],
+["Fuel pumps","Overhead · FUEL panel","Verify the required fuel pumps remain ON for engine start."],
+["Engine mode selector","Center pedestal","Confirm IGN/START is selected for the simulated start."],
+["Engine Master 2","Overhead · ENG panel","Set ENG 2 MASTER ON and monitor the engine indications until stable."],
+["Engine Master 1","Overhead · ENG panel","Set ENG 1 MASTER ON and monitor the engine indications until stable."],
+["Engine mode selector","Center pedestal","After both engines are stable, return the selector to NORM."],
+["APU BLEED","Overhead · AIR panel","After engine bleed supply is available, set APU BLEED OFF."],
+["APU MASTER","Overhead · APU panel","When the aircraft is supplied by its engine generators, switch APU MASTER OFF if no longer needed."]
+];
+function itemsFor(i,p){if(p===1)return special[i]&&special[i][11]?special[i][11]:[];if(i===0&&p===2)return a320BeforeStart;if(i===0&&p===4)return a320EngineStart;const sourcePhase=p===0?0:p-1;return (special[i]&&special[i][sourcePhase])?[...generic[sourcePhase],...special[i][sourcePhase]]:generic[sourcePhase]}
 function showChecklistLesson(item,phaseIndex){
 const dialog=document.querySelector("#lessonDialog"),a=aircraft[current],faMode=isFa;
 const action=item[0],location=item[1],instruction=item[2];
