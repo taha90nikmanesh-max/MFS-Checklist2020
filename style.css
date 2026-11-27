@@ -55,3 +55,25 @@ html[dir="rtl"] .lesson-head{flex-direction:row-reverse}
 @media(max-width:520px){.lesson-head{padding:17px}.lesson-content{padding:5px 17px 18px}.lesson-head h2{font-size:19px}}
 
 .lesson-dialog[open]{z-index:9999}.lesson-dialog[open]:not(:modal){position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);margin:0;max-height:85vh}.lesson-dialog[open]:not(:modal)::backdrop{background:#02070bcc}
+
+/* Airline details, simulator ratings and UTC clock */
+.flight-form{grid-template-columns:repeat(3,minmax(0,1fr))}
+.utc-clock-card strong{font-size:20px!important;letter-spacing:1px}
+.utc-clock-card span{display:block;color:var(--muted);font:10px "DM Mono";margin-top:6px}
+.ratings-panel{margin:18px 0;padding:20px;background:linear-gradient(145deg,#15232f,#101923);border:1px solid var(--line);border-radius:7px}
+.ratings-heading{display:flex;justify-content:space-between;gap:18px;align-items:center}
+.ratings-heading h3{font-size:17px;margin:7px 0}
+.ratings-heading p{font-size:11px;line-height:1.7;color:var(--muted);margin:0}
+.ratings-heading>div:first-child>small{font:9px "DM Mono";letter-spacing:1px;color:var(--cyan)}
+.rating-score{text-align:center;min-width:130px}
+.rating-score strong{display:block;color:var(--gold);font-size:21px;letter-spacing:2px;white-space:nowrap}
+.rating-score span{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.rating-badges{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin-top:17px}
+.rating-badge{display:grid;grid-template-columns:26px 1fr;align-items:center;gap:3px 7px;padding:11px;border:1px solid var(--line);border-radius:5px;opacity:.55}
+.rating-badge.earned{opacity:1;border-color:#4b807c;background:#102a2c}
+.rating-badge strong{grid-row:span 2;color:var(--muted);font-size:17px;text-align:center}
+.rating-badge.earned strong{color:var(--cyan)}
+.rating-badge b{font-size:10px}
+.rating-badge small{font-size:9px;color:var(--muted);line-height:1.5}
+@media(max-width:800px){.flight-form{grid-template-columns:1fr 1fr}.rating-badges{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.flight-form{grid-template-columns:1fr}.ratings-heading{align-items:flex-start;flex-direction:column}.rating-score{text-align:start}.rating-badges{grid-template-columns:1fr 1fr}}
