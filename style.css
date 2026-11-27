@@ -14,3 +14,5 @@ html[dir="rtl"] body{text-align:right}html[dir="rtl"] .layout{direction:rtl}html
 html[dir="rtl"] .check{direction:rtl}
 html[dir="rtl"] .action,html[dir="rtl"] .meta{text-align:right;direction:rtl}
 html[dir="rtl"] .action{justify-content:flex-start}
+
+.phase-head small{white-space:nowrap}.phase-head .phase-progress{height:4px;flex:0 0 54px;background:#293b49;border-radius:9px;overflow:hidden}.phase-head .phase-progress i{display:block;height:100%;background:var(--cyan);transition:width .25s}.check input{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}@media(max-width:520px){.phase-head{gap:8px}.phase-head .phase-progress{flex-basis:34px}}
