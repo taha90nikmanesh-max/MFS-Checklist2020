@@ -1,4 +1,4 @@
-const CACHE="flight-deck-msfs-v16";
+const CACHE="flight-deck-msfs-v17";
 const FILES=["./","./index.html","./style.css","./script.js","./manifest.webmanifest","./icon.svg"];
 self.addEventListener("install",event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES))));
 self.addEventListener("activate",event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key))))));
