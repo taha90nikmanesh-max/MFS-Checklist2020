@@ -219,16 +219,6 @@ function itemsFor(i,p){
  }
  return base;
 }
-function itemsFor(i,p){
- let base=[];
- if(p===1)base=special[i]&&special[i][11]?[...special[i][11]]:[];
- else if(i===0&&p===2)base=[...a320BeforeStart];
- else if(i===0&&p===4)base=[...a320EngineStart];
- else {const sourcePhase=p===0?0:p-1;base=(special[i]&&special[i][sourcePhase])?[...generic[sourcePhase],...special[i][sourcePhase]]:[...generic[sourcePhase]];}
- const additions=aircraftChecklistAdditions[i]&&aircraftChecklistAdditions[i][p];
- if(additions)base.push(...additions);
- return base;
-}
 function showChecklistLesson(item,phaseIndex){
 const dialog=document.querySelector("#lessonDialog"),a=aircraft[current],faMode=isFa;
 const action=item[0],location=item[1],instruction=item[2];
