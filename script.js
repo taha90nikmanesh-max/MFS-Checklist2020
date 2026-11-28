@@ -440,7 +440,7 @@ function applyPrefs(){
 }
 ["themeSetting","densitySetting","unitSetting"].forEach(id=>document.getElementById(id).addEventListener("change",()=>{
  const p={theme:document.getElementById("themeSetting").value,density:document.getElementById("densitySetting").value,unit:document.getElementById("unitSetting").value};
- localStorage.setItem(preferenceKey,JSON.stringify(p));applyPrefs();
+ localStorage.setItem(preferenceKey,JSON.stringify(p));applyPrefs();drawFlightHistory();
  document.getElementById("settingsSaved").textContent=isFa?"تنظیمات ذخیره شد.":"Settings saved on this device.";
 }));
 applyPrefs();
@@ -466,3 +466,6 @@ function formatJournalDistance(f){
  if(unit==="mi")return (Number(f.km)*0.621371).toFixed(0)+" mi · "+Number(f.km).toLocaleString()+" km";
  return Number(f.km).toLocaleString()+" km · "+Number(f.nm).toLocaleString()+" NM";
 }
+
+select.addEventListener("change",()=>{if(trainingActive){trainingActive=false;trainingPanel.hidden=true;}});
+search.addEventListener("input",()=>{if(trainingActive){trainingIndex=0;refreshTraining();}});
