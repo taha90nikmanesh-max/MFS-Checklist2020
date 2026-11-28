@@ -1,5 +1,5 @@
 const aircraft=[
-["Airbus A320neo","Airliner · Fly-by-wire","Overhead, MCDU, FCU and ECAM. Use the modeled Airbus checklist for exact switch flows."],
+["Airbus A320neo","Airliner · Fly-by-wire · FlyByWire A32NX","HANGAR01 Full checklist for the FlyByWire A32NX add-on. This is now the primary A320neo checklist in Flight Deck; it is not the default Asobo aircraft variant."],
 ["Aviat Pitts Special S2S","Aerobatic · Piston","Conventional stick-and-rudder cockpit; no airline FMC."],
 ["Boeing 747-8 Intercontinental","Wide-body · Four-engine jet","Overhead systems, MCP and FMC/CDU route management."],
 ["CubCrafters XCub","Utility · Piston","Conventional light-aircraft controls; no FMC."],
@@ -19,7 +19,7 @@ const aircraft=[
 ["Cessna 208B Grand Caravan EX","Single turboprop · Garmin avionics","Use installed Garmin flight-plan pages and turboprop checklist."],
 ["Cessna Citation CJ4","Business jet · Pro Line avionics","Use CJ4 FMS / integrated displays; not an Airbus MCDU."],
 ["Zlin Savage Cub","Light sport · Tailwheel","Basic tailwheel aircraft cockpit; no FMC."],
-["Airbus A320neo (FlyByWire A32NX)","Airliner · Fly-by-wire add-on","HANGAR01 Full checklist for the FlyByWire A32NX add-on. This is a separate add-on variant, not the default Asobo A320neo."]
+
 ];
 const phases=["Preflight & cockpit preparation","Navigation / flight planning","Before engine start","Pushback / ground handling","Engine start","Taxi","Before takeoff","Takeoff & climb","Cruise","Descent & approach","Landing & taxi-in","Shutdown"];
 const generic=[
