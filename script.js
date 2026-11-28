@@ -356,7 +356,7 @@ const comparePage=document.getElementById("comparePage"),settingsPage=document.g
 const compareNav=document.getElementById("compareNav"),settingsNav=document.getElementById("settingsNav");
 const originalShowPage=showPage;
 showPage=function(page){
- const pages={dashboard:"dashboardPage",checklist:"checklistPage",info:"aircraftInfoPage",journal:"journalPage",compare:"comparePage",settings:"settingsPage",fleet:"fleetPage",aircraftLog:"aircraftLogPage",airport:"airportPage",exam:"examPage",cockpit:"cockpitPage",weather:"weatherPage",backup:"backupPage"};
+ const pages={dashboard:"dashboardPage",checklist:"checklistPage",info:"aircraftInfoPage",journal:"journalPage",compare:"comparePage",settings:"settingsPage",fleet:"fleetPage",aircraftLog:"aircraftLogPage",airport:"airportPage",exam:"examPage",weather:"weatherPage",backup:"backupPage"};
  Object.entries(pages).forEach(([key,id])=>{const el=document.getElementById(id);if(el)el.hidden=key!==page;});
  document.querySelectorAll(".page-tab").forEach(b=>b.classList.remove("active"));
  const activeMap={checklist:"checklistNav",info:"aircraftInfoNav",journal:"journalNav",compare:"compareNav",settings:"settingsNav"};
