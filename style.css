@@ -134,3 +134,7 @@ html[dir="rtl"] .lesson-head{flex-direction:row-reverse}
 .lessonBtn{font-size:11px;padding:8px 14px;margin-top:10px}
 .tools>div{display:none!important}
 @media(max-width:520px){.phase-body{padding:0 2px 16px 14px}.check{padding:15px 7px;gap:11px}.action{font-size:13px}.action strong{font-size:13px}.action span{font-size:12px}}
+
+/* Compact question-mark button: explains only the checklist item's purpose */
+.lessonBtn{display:inline-flex;align-items:center;justify-content:center;width:27px;height:27px;margin:7px 0 0;padding:0;border:1px solid #68d9d0;border-radius:50%;color:#68d9d0;font:700 15px Manrope;line-height:1}
+.lessonBtn:hover{background:#68d9d018;color:#a2fff3}
