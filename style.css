@@ -165,4 +165,4 @@ html[dir="rtl"] .lesson-head{flex-direction:row-reverse}
 .check{cursor:pointer}
 .check input{cursor:pointer}
 
-.source-link{margin:-10px 0 18px;font-size:10px;line-height:1.7;color:var(--muted)}.source-link a{color:var(--cyan);text-decoration:underline;text-underline-offset:3px}.source-link[hidden]{display:none}
+.source-link{margin:-10px 0 18px;font-size:10px;line-height:1.7;color:var(--muted)}.source-link[hidden]{display:none}
