@@ -356,17 +356,14 @@ const comparePage=document.getElementById("comparePage"),settingsPage=document.g
 const compareNav=document.getElementById("compareNav"),settingsNav=document.getElementById("settingsNav");
 const originalShowPage=showPage;
 showPage=function(page){
-  if(page==="compare"||page==="settings"){
-    checklistPage.hidden=true;journalPage.hidden=true;aircraftInfoPage.hidden=true;
-    comparePage.hidden=page!=="compare";settingsPage.hidden=page!=="settings";
-    [checklistNav,journalNav,aircraftInfoNav,compareNav,settingsNav].forEach(b=>b.classList.remove("active"));
-    (page==="compare"?compareNav:settingsNav).classList.add("active");
-    if(page==="compare")renderCompare();
-    window.scrollTo(0,0);return;
-  }
-  comparePage.hidden=true;settingsPage.hidden=true;
-  originalShowPage(page);
-  [compareNav,settingsNav].forEach(b=>b.classList.remove("active"));
+ const pages={dashboard:"dashboardPage",checklist:"checklistPage",info:"aircraftInfoPage",journal:"journalPage",compare:"comparePage",settings:"settingsPage",fleet:"fleetPage",aircraftLog:"aircraftLogPage",airport:"airportPage",exam:"examPage",cockpit:"cockpitPage",weather:"weatherPage",backup:"backupPage"};
+ Object.entries(pages).forEach(([key,id])=>{const el=document.getElementById(id);if(el)el.hidden=key!==page;});
+ document.querySelectorAll(".page-tab").forEach(b=>b.classList.remove("active"));
+ const activeMap={checklist:"checklistNav",info:"aircraftInfoNav",journal:"journalNav",compare:"compareNav",settings:"settingsNav"};
+ const activeId=activeMap[page];if(activeId)document.getElementById(activeId)?.classList.add("active");
+ document.querySelectorAll(".nav-group").forEach(g=>{g.classList.remove("open");g.querySelector(".nav-trigger")?.setAttribute("aria-expanded","false")});
+ if(page==="info")renderAircraftInfo();if(page==="compare")renderCompare();if(page==="dashboard")renderDashboard();if(page==="fleet")renderFleet();if(page==="aircraftLog")renderAircraftLog();if(page==="airport")renderAirports();if(page==="exam")renderExam();if(page==="cockpit")updateCockpit();
+ window.scrollTo(0,0);
 };
 compareNav.addEventListener("click",()=>showPage("compare"));
 settingsNav.addEventListener("click",()=>showPage("settings"));
@@ -469,3 +466,95 @@ function formatJournalDistance(f){
 
 select.addEventListener("change",()=>{if(trainingActive){trainingActive=false;trainingPanel.hidden=true;}});
 search.addEventListener("input",()=>{if(trainingActive){trainingIndex=0;refreshTraining();}});
+
+
+// Extended Flight Deck modules. All records remain local to this browser.
+const favoriteKey="fd-msfs-favorites-v1",weatherKey="fd-msfs-weather-v1";
+const readJson=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key)||"null")??fallback}catch(e){return fallback}};
+const writeJson=(key,value)=>localStorage.setItem(key,JSON.stringify(value));
+function renderDashboard(){
+ const history=getFlightHistory(),hours=history.reduce((n,f)=>n+(Number(f.hours)||estimateFlightHours(f.km,f.aircraft)),0),fav=readJson(favoriteKey,[]);
+ document.getElementById("dashHours").textContent=formatFlightTime(hours);document.getElementById("dashFlights").textContent=history.length;document.getElementById("dashFleet").textContent=aircraft.length;document.getElementById("dashFavorites").textContent=fav.length;
+ const note=document.getElementById("dashboardNotice");note.textContent=history.length?("آخرین پرواز ثبت‌شده: "+history[history.length-1].origin+" → "+history[history.length-1].destination):"هنوز پروازی ثبت نشده؛ از Flight Planner شروع کن.";
+}
+function renderFleet(){
+ const host=document.getElementById("fleetList"),fav=readJson(favoriteKey,[]);host.innerHTML="";
+ aircraft.forEach((a,i)=>{const row=document.createElement("div");row.className="fleet-row";const info=document.createElement("div"),name=document.createElement("strong"),meta=document.createElement("small");name.textContent=a[0];meta.textContent=a[1];info.append(name,meta);const btn=document.createElement("button");btn.type="button";btn.textContent=fav.includes(i)?"★ Saved":"☆ Add favorite";btn.setAttribute("aria-pressed",String(fav.includes(i)));btn.onclick=()=>{const next=readJson(favoriteKey,[]),at=next.indexOf(i);if(at>=0)next.splice(at,1);else next.push(i);writeJson(favoriteKey,next);renderFleet();};row.append(info,btn);host.append(row)});
+}
+function renderAircraftLog(){
+ const host=document.getElementById("aircraftLogRows"),history=getFlightHistory();host.innerHTML="";
+ aircraft.forEach((a,i)=>{const flights=history.filter(f=>f.aircraft===a[0]),hours=flights.reduce((n,f)=>n+(Number(f.hours)||estimateFlightHours(f.km,f.aircraft)),0),row=document.createElement("div");row.className="airport-row";const info=document.createElement("div"),name=document.createElement("strong"),meta=document.createElement("small");name.textContent=a[0];meta.textContent=flights.length+" flight(s) · "+formatFlightTime(hours);info.append(name,meta);row.append(info);host.append(row)});
+}
+const airportData=[
+["OIIE","IKA","Imam Khomeini International","Tehran, Iran","3305 ft","Main runway data varies by chart"],
+["OIII","THR","Mehrabad International","Tehran, Iran","3962 ft","Multiple paved runways"],
+["LTBA","ISL","Istanbul Atatürk","Istanbul, Türkiye","163 ft","Legacy airport; simulator scenery dependent"],
+["LTFM","IST","Istanbul Airport","Istanbul, Türkiye","325 ft","Multiple long runways"],
+["OMDB","DXB","Dubai International","Dubai, UAE","62 ft","Multiple runways"],
+["EGLL","LHR","London Heathrow","London, United Kingdom","83 ft","Two parallel runways"],
+["EDDF","FRA","Frankfurt Airport","Frankfurt, Germany","364 ft","Multiple runways"],
+["LFPG","CDG","Paris Charles de Gaulle","Paris, France","392 ft","Multiple runways"],
+["KJFK","JFK","John F. Kennedy International","New York, USA","13 ft","Multiple runways"],
+["KLAX","LAX","Los Angeles International","Los Angeles, USA","125 ft","Parallel runway pairs"],
+["OTHH","DOH","Hamad International","Doha, Qatar","13 ft","Multiple runways"],
+["UBBB","GYD","Heydar Aliyev International","Baku, Azerbaijan","−10 ft","Multiple runways"]
+];
+function renderAirports(){
+ const q=(document.getElementById("airportSearch").value||"").toLowerCase(),host=document.getElementById("airportResults");host.innerHTML="";
+ airportData.filter(a=>a.join(" ").toLowerCase().includes(q)).forEach(a=>{const row=document.createElement("div");row.className="airport-row";const info=document.createElement("div"),name=document.createElement("strong"),meta=document.createElement("small");name.textContent=a[2]+" · "+a[0]+" / "+a[1];meta.textContent=a[3]+" · Elevation "+a[4]+" · "+a[5];info.append(name,meta);row.append(info);host.append(row)});
+ if(!host.children.length)host.textContent="No matching airport in this sample directory.";
+}
+document.getElementById("airportSearch").addEventListener("input",renderAirports);
+const quiz=[
+["What does the altimeter primarily indicate?",["Aircraft altitude","Ground speed","Engine temperature"],0],
+["What does IAS stand for?",["Indicated Airspeed","Instrument Approach System","Initial Altitude Setting"],0],
+["Which display commonly shows attitude and heading information?",["PFD","Cabin lighting panel","Fuel truck display"],0],
+["What does ATIS provide in a simulator?",["Recorded airport information","Aircraft maintenance history","Passenger manifest"],0],
+["What does the heading indicator show?",["Direction the aircraft is pointing","Distance to destination","Outside temperature"],0],
+["What is a waypoint?",["A defined navigation point","A type of engine","A runway lighting color"],0],
+["What does QNH setting help the altimeter indicate?",["Altitude referenced to mean sea level","Cabin pressure only","Wind speed"],0],
+["What is a checklist for in the simulator?",["A structured reminder of modeled tasks","A replacement for aircraft documentation","An automatic flight control"],0]
+];
+let quizIndex=0,quizScore=0,quizAnswered=false;
+function renderExam(){
+ const q=quiz[quizIndex];document.getElementById("examProgress").textContent="Question "+(quizIndex+1)+" / "+quiz.length;document.getElementById("examScore").textContent="Score: "+quizScore;document.getElementById("examQuestion").textContent=q[0];document.getElementById("examFeedback").textContent="";document.getElementById("examNext").disabled=true;quizAnswered=false;
+ const host=document.getElementById("examAnswers");host.innerHTML="";q[1].forEach((answer,i)=>{const b=document.createElement("button");b.type="button";b.textContent=String.fromCharCode(65+i)+". "+answer;b.onclick=()=>{if(quizAnswered)return;quizAnswered=true;const correct=i===q[2];if(correct)quizScore++;Array.from(host.children).forEach((x,j)=>{x.disabled=true;if(j===q[2])x.classList.add("correct");else if(j===i)x.classList.add("incorrect")});document.getElementById("examFeedback").textContent=correct?"Correct.":"Not quite. Correct answer: "+q[1][q[2]];document.getElementById("examScore").textContent="Score: "+quizScore;document.getElementById("examNext").disabled=false;};host.append(b)});
+ document.getElementById("examNext").textContent=quizIndex===quiz.length-1?"Finish":"Next question";
+}
+document.getElementById("examNext").addEventListener("click",()=>{if(!quizAnswered)return;if(quizIndex===quiz.length-1){document.getElementById("examQuestion").textContent="Quiz complete · "+quizScore+" / "+quiz.length;document.getElementById("examAnswers").innerHTML="";document.getElementById("examFeedback").textContent="این نتیجه فقط برای تمرین مفاهیم شبیه‌ساز است.";document.getElementById("examNext").disabled=true;}else{quizIndex++;renderExam()}});
+document.getElementById("examRestart").addEventListener("click",()=>{quizIndex=0;quizScore=0;renderExam()});
+function updateCockpit(){
+ const pairs=[["cockpitIas","readIas",v=>String(v||0).padStart(3,"0")+" kt"],["cockpitAlt","readAlt",v=>String(v||0).padStart(5,"0")+" ft"],["cockpitHdg","readHdg",v=>String(v||0).padStart(3,"0")+"°"],["cockpitVsi","readVsi",v=>Number(v||0).toLocaleString()+" fpm"]];
+ pairs.forEach(([input,out,fmt])=>document.getElementById(out).textContent=fmt(document.getElementById(input).value));
+}
+["cockpitIas","cockpitAlt","cockpitHdg","cockpitVsi"].forEach(id=>document.getElementById(id).addEventListener("input",updateCockpit));
+function saveWeather(){
+ const ids=["weatherFrom","weatherTo","weatherWind","weatherVisibility","weatherClouds","weatherTemp","weatherNotes"],data={};ids.forEach(id=>data[id]=document.getElementById(id).value);writeJson(weatherKey,data);document.getElementById("weatherSaved").textContent="Briefing saved on this device.";
+}
+document.getElementById("saveWeather").addEventListener("click",saveWeather);
+document.getElementById("clearWeather").addEventListener("click",()=>{["weatherFrom","weatherTo","weatherWind","weatherVisibility","weatherClouds","weatherTemp","weatherNotes"].forEach(id=>document.getElementById(id).value="");localStorage.removeItem(weatherKey);document.getElementById("weatherSaved").textContent="Briefing cleared."});
+const savedWeather=readJson(weatherKey,{});Object.entries(savedWeather).forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.value=value});
+function fullBackupData(){const data={format:"FlightDeckBackup",version:2,createdAt:new Date().toISOString(),storage:{}};["fd-msfs-checks","msfs-flight-history-v1",preferenceKey,favoriteKey,weatherKey].forEach(k=>{const v=localStorage.getItem(k);if(v!==null)data.storage[k]=v});return data}
+document.getElementById("fullBackup").addEventListener("click",()=>downloadTextFile("flight-deck-full-backup.json",JSON.stringify(fullBackupData(),null,2),"application/json"));
+document.getElementById("restoreFile").addEventListener("change",async e=>{
+ const file=e.target.files?.[0];if(!file)return;
+ try{const data=JSON.parse(await file.text());if(data.format!=="FlightDeckBackup"||!data.storage||typeof data.storage!=="object")throw new Error("Invalid backup format");if(!confirm("Restore this backup? Current checklist and flight records in the included categories will be replaced."))return;
+  ["fd-msfs-checks","msfs-flight-history-v1",preferenceKey,favoriteKey,weatherKey].forEach(k=>{if(Object.prototype.hasOwnProperty.call(data.storage,k))localStorage.setItem(k,data.storage[k]);else localStorage.removeItem(k)});
+  document.getElementById("backupStatus").textContent="Backup restored. Reloading the app…";location.reload();
+ }catch(err){document.getElementById("backupStatus").textContent="Could not restore this file: "+err.message;}finally{e.target.value=""}
+});
+function runGlobalSearch(){
+ const q=document.getElementById("globalSearch").value.trim().toLowerCase();if(!q)return;
+ const targets=[["checklist","checklist"],["aircraft","info"],["journal","journal"],["planner","journal"],["compare","compare"],["setting","settings"],["fleet","fleet"],["logbook","aircraftLog"],["airport","airport"],["quiz","exam"],["exam","exam"],["cockpit","cockpit"],["weather","weather"],["backup","backup"]];
+ const found=targets.find(([term])=>term.includes(q)||q.includes(term));if(found){showPage(found[1]);return}
+ const idx=aircraft.findIndex(a=>a[0].toLowerCase().includes(q));if(idx>=0){select.value=String(idx);render();showPage("checklist");return}
+ document.getElementById("notificationsButton").title="No matching section or aircraft found.";
+}
+document.getElementById("globalSearch").addEventListener("keydown",e=>{if(e.key==="Enter")runGlobalSearch()});
+document.getElementById("notificationsButton").addEventListener("click",()=>{const h=getFlightHistory(),fav=readJson(favoriteKey,[]);alert("Flight Deck summary\nFlights logged: "+h.length+"\nFavorite aircraft: "+fav.length+"\nAll information is stored locally in this browser.")});
+document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.go)));
+document.querySelectorAll(".nav-trigger").forEach(trigger=>trigger.addEventListener("click",()=>{const group=trigger.closest(".nav-group"),open=!group.classList.contains("open");document.querySelectorAll(".nav-group").forEach(g=>{g.classList.remove("open");g.querySelector(".nav-trigger")?.setAttribute("aria-expanded","false")});group.classList.toggle("open",open);trigger.setAttribute("aria-expanded",String(open))}));
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".nav-group.open").forEach(g=>{g.classList.remove("open");g.querySelector(".nav-trigger")?.setAttribute("aria-expanded","false")})});
+["dashboardNav","fleetNav","aircraftLogNav","airportNav","examNav","cockpitNav","weatherNav","backupNav"].forEach(id=>{const map={dashboardNav:"dashboard",fleetNav:"fleet",aircraftLogNav:"aircraftLog",airportNav:"airport",examNav:"exam",cockpitNav:"cockpit",weatherNav:"weather",backupNav:"backup"};document.getElementById(id).addEventListener("click",()=>showPage(map[id]))});
+document.getElementById("notificationsButton").title="Show local app summary";
+renderDashboard();
