@@ -138,3 +138,11 @@ html[dir="rtl"] .lesson-head{flex-direction:row-reverse}
 /* Compact question-mark button: explains only the checklist item's purpose */
 .lessonBtn{display:inline-flex;align-items:center;justify-content:center;width:27px;height:27px;margin:7px 0 0;padding:0;border:1px solid #68d9d0;border-radius:50%;color:#68d9d0;font:700 15px Manrope;line-height:1}
 .lessonBtn:hover{background:#68d9d018;color:#a2fff3}
+
+/* Compact help marker beside each checklist checkbox; explanation appears on hover via title tooltip. */
+.check{grid-template-columns:38px 1fr;gap:9px;align-items:start}
+.check-controls{display:flex;align-items:flex-start;gap:5px;padding-top:2px}
+.check-controls .check-input{flex:none}
+.lessonBtn{display:inline-flex;align-items:center;justify-content:center;flex:none;width:16px;height:16px;min-width:16px;margin:0;padding:0;border:1px solid #68d9d0;border-radius:50%;color:#68d9d0;background:transparent;font:700 10px/1 Manrope;cursor:help}
+.lessonBtn:hover,.lessonBtn:focus-visible{background:#68d9d018;color:#a2fff3;outline:1px solid #68d9d0;outline-offset:2px}
+@media(max-width:520px){.check{grid-template-columns:36px 1fr}.check-controls{gap:4px}}
