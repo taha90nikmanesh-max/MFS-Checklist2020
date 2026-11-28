@@ -7,6 +7,7 @@ on:
       - "index.html"
       - "style.css"
       - "script.js"
+      - "hangar-checklists.js"
       - "main.js"
       - "package.json"
       - ".github/workflows/windows-app.yml"
