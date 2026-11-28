@@ -362,7 +362,7 @@ showPage=function(page){
  const activeMap={checklist:"checklistNav",info:"aircraftInfoNav",journal:"journalNav",compare:"compareNav",settings:"settingsNav"};
  const activeId=activeMap[page];if(activeId)document.getElementById(activeId)?.classList.add("active");
  document.querySelectorAll(".nav-group").forEach(g=>{g.classList.remove("open");g.querySelector(".nav-trigger")?.setAttribute("aria-expanded","false")});
- if(page==="info")renderAircraftInfo();if(page==="compare")renderCompare();if(page==="dashboard")renderDashboard();if(page==="fleet")renderFleet();if(page==="aircraftLog")renderAircraftLog();if(page==="airport")renderAirports();if(page==="exam")renderExam();if(page==="cockpit")updateCockpit();
+ if(page==="info")renderAircraftInfo();if(page==="compare")renderCompare();if(page==="dashboard")renderDashboard();if(page==="fleet")renderFleet();if(page==="aircraftLog")renderAircraftLog();if(page==="airport")renderAirports();if(page==="exam")renderExam();
  window.scrollTo(0,0);
 };
 compareNav.addEventListener("click",()=>showPage("compare"));
@@ -523,11 +523,6 @@ function renderExam(){
 }
 document.getElementById("examNext").addEventListener("click",()=>{if(!quizAnswered)return;if(quizIndex===quiz.length-1){document.getElementById("examQuestion").textContent="Quiz complete · "+quizScore+" / "+quiz.length;document.getElementById("examAnswers").innerHTML="";document.getElementById("examFeedback").textContent="این نتیجه فقط برای تمرین مفاهیم شبیه‌ساز است.";document.getElementById("examNext").disabled=true;}else{quizIndex++;renderExam()}});
 document.getElementById("examRestart").addEventListener("click",()=>{quizIndex=0;quizScore=0;renderExam()});
-function updateCockpit(){
- const pairs=[["cockpitIas","readIas",v=>String(v||0).padStart(3,"0")+" kt"],["cockpitAlt","readAlt",v=>String(v||0).padStart(5,"0")+" ft"],["cockpitHdg","readHdg",v=>String(v||0).padStart(3,"0")+"°"],["cockpitVsi","readVsi",v=>Number(v||0).toLocaleString()+" fpm"]];
- pairs.forEach(([input,out,fmt])=>document.getElementById(out).textContent=fmt(document.getElementById(input).value));
-}
-["cockpitIas","cockpitAlt","cockpitHdg","cockpitVsi"].forEach(id=>document.getElementById(id).addEventListener("input",updateCockpit));
 function saveWeather(){
  const ids=["weatherFrom","weatherTo","weatherWind","weatherVisibility","weatherClouds","weatherTemp","weatherNotes"],data={};ids.forEach(id=>data[id]=document.getElementById(id).value);writeJson(weatherKey,data);document.getElementById("weatherSaved").textContent="Briefing saved on this device.";
 }
@@ -555,6 +550,6 @@ document.getElementById("notificationsButton").addEventListener("click",()=>{con
 document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.go)));
 document.querySelectorAll(".nav-trigger").forEach(trigger=>trigger.addEventListener("click",()=>{const group=trigger.closest(".nav-group"),open=!group.classList.contains("open");document.querySelectorAll(".nav-group").forEach(g=>{g.classList.remove("open");g.querySelector(".nav-trigger")?.setAttribute("aria-expanded","false")});group.classList.toggle("open",open);trigger.setAttribute("aria-expanded",String(open))}));
 document.addEventListener("keydown",e=>{if(e.key==="Escape")document.querySelectorAll(".nav-group.open").forEach(g=>{g.classList.remove("open");g.querySelector(".nav-trigger")?.setAttribute("aria-expanded","false")})});
-["dashboardNav","fleetNav","aircraftLogNav","airportNav","examNav","cockpitNav","weatherNav","backupNav"].forEach(id=>{const map={dashboardNav:"dashboard",fleetNav:"fleet",aircraftLogNav:"aircraftLog",airportNav:"airport",examNav:"exam",cockpitNav:"cockpit",weatherNav:"weather",backupNav:"backup"};document.getElementById(id).addEventListener("click",()=>showPage(map[id]))});
+["dashboardNav","fleetNav","aircraftLogNav","airportNav","examNav","weatherNav","backupNav"].forEach(id=>{const map={dashboardNav:"dashboard",fleetNav:"fleet",aircraftLogNav:"aircraftLog",airportNav:"airport",examNav:"exam",weatherNav:"weather",backupNav:"backup"};document.getElementById(id).addEventListener("click",()=>showPage(map[id]))});
 document.getElementById("notificationsButton").title="Show local app summary";
 renderDashboard();
