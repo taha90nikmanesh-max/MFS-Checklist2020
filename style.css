@@ -166,3 +166,6 @@ html[dir="rtl"] .lesson-head{flex-direction:row-reverse}
 .check input{cursor:pointer}
 
 .source-link{margin:-10px 0 18px;font-size:10px;line-height:1.7;color:var(--muted)}.source-link[hidden]{display:none}
+
+/* Slightly narrower desktop layout for a more focused checklist view. */
+main{max-width:1160px}
