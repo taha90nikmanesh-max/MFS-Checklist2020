@@ -8,6 +8,7 @@ on:
       - 'index.html'
       - 'style.css'
       - 'script.js'
+      - 'hangar-checklists.js'
       - 'icon.svg'
       - 'manifest.webmanifest'
       - 'sw.js'
@@ -42,7 +43,7 @@ jobs:
       - name: Prepare web assets
         run: |
           mkdir -p www
-          cp index.html style.css script.js icon.svg manifest.webmanifest sw.js www/
+          cp index.html style.css script.js hangar-checklists.js icon.svg manifest.webmanifest sw.js www/
 
       - name: Add Android platform
         run: npx cap add android
