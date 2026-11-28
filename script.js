@@ -313,7 +313,7 @@ async function findAirport(value){
  throw new Error("این فرودگاه در فهرست آفلاین نیست و دسترسی اینترنت برای دریافت اطلاعات برقرار نشد. اتصال اینترنت را بررسی کن یا کد فرودگاه دیگری وارد کن.")
 }
 function greatCircleKm(a,b){const rad=x=>x*Math.PI/180;const dLat=rad(b.lat-a.lat),dLon=rad(b.lon-a.lon);const h=Math.sin(dLat/2)**2+Math.cos(rad(a.lat))*Math.cos(rad(b.lat))*Math.sin(dLon/2)**2;return 6371.0088*2*Math.atan2(Math.sqrt(h),Math.sqrt(1-h))}
-flightForm.addEventListener("submit",async e=>{e.preventDefault();const origin=document.querySelector("#origin").value.trim(),destination=document.querySelector("#destination").value.trim();if(origin.toUpperCase()===destination.toUpperCase()){flightMessage.textContent="مبدأ و مقصد نمی‌توانند یکی باشند.";return}const btn=document.querySelector("#saveFlight");btn.disabled=true;btn.textContent="در حال محاسبه…";flightMessage.textContent="در حال جست‌وجوی فرودگاه‌ها (فهرست آفلاین و سپس اینترنت)…";try{const a=await findAirport(origin);await new Promise(resolve=>setTimeout(resolve,1100));const b=await findAirport(destination);const km=Math.round(greatCircleKm(a,b)),nm=Math.round(km/1.852);const selectedAircraft=aircraft[Number(flightAircraftSelect.value)||0][0];const hours=estimateFlightHours(km,selectedAircraft);const entry={origin:origin.toUpperCase(),destination:destination.toUpperCase(),aircraft:selectedAircraft,airline:document.querySelector("#airlineName").value.trim(),flightNumber:document.querySelector("#flightNumber").value.trim().toUpperCase(),date:new Date(flightDate.value).toISOString(),km,nm,hours};const history=getFlightHistory();history.push(entry);localStorage.setItem(flightStoreKey,JSON.stringify(history));estimatedDuration.textContent="حدود "+formatFlightTime(hours);flightMessage.textContent="فاصله مستقیم: "+km.toLocaleString()+" کیلومتر ("+nm.toLocaleString()+" مایل دریایی). زمان تخمینی پرواز: "+formatFlightTime(hours)+". پرواز ثبت شد.";drawFlightHistory()}catch(err){flightMessage.textContent=err.message||"خطا در محاسبه؛ دوباره تلاش کن."}finally{btn.disabled=false;btn.textContent="محاسبه فاصله و ثبت پرواز"}});
+flightForm.addEventListener("submit",async e=>{e.preventDefault();const origin=document.querySelector("#origin").value.trim(),destination=document.querySelector("#destination").value.trim();if(origin.toUpperCase()===destination.toUpperCase()){flightMessage.textContent="مبدأ و مقصد نمی‌توانند یکی باشند.";return}const btn=document.querySelector("#saveFlight");btn.disabled=true;btn.textContent="در حال محاسبه…";flightMessage.textContent="در حال جست‌وجوی فرودگاه‌ها (فهرست آفلاین و سپس اینترنت)…";try{const a=await findAirport(origin);await new Promise(resolve=>setTimeout(resolve,1100));const b=await findAirport(destination);const km=Math.round(greatCircleKm(a,b)),nm=Math.round(km/1.852);drawRouteMap(a,b,km,nm);const selectedAircraft=aircraft[Number(flightAircraftSelect.value)||0][0];const hours=estimateFlightHours(km,selectedAircraft);const entry={origin:origin.toUpperCase(),destination:destination.toUpperCase(),aircraft:selectedAircraft,airline:document.querySelector("#airlineName").value.trim(),flightNumber:document.querySelector("#flightNumber").value.trim().toUpperCase(),date:new Date(flightDate.value).toISOString(),km,nm,hours};const history=getFlightHistory();history.push(entry);localStorage.setItem(flightStoreKey,JSON.stringify(history));estimatedDuration.textContent="حدود "+formatFlightTime(hours);flightMessage.textContent="فاصله مستقیم: "+km.toLocaleString()+" کیلومتر ("+nm.toLocaleString()+" مایل دریایی). زمان تخمینی پرواز: "+formatFlightTime(hours)+". پرواز ثبت شد.";drawFlightHistory()}catch(err){flightMessage.textContent=err.message||"خطا در محاسبه؛ دوباره تلاش کن."}finally{btn.disabled=false;btn.textContent="محاسبه فاصله و ثبت پرواز"}});
 
 // Aircraft profile page data.
 
@@ -348,3 +348,114 @@ function renderAircraftInfo(){
 const checklistPage=document.querySelector("#checklistPage"),journalPage=document.querySelector("#journalPage"),aircraftInfoPage=document.querySelector("#aircraftInfoPage"),checklistNav=document.querySelector("#checklistNav"),journalNav=document.querySelector("#journalNav"),aircraftInfoNav=document.querySelector("#aircraftInfoNav");
 function showPage(page){const journal=page==="journal",info=page==="info";checklistPage.hidden=journal||info;journalPage.hidden=!journal;aircraftInfoPage.hidden=!info;checklistNav.classList.toggle("active",!journal&&!info);journalNav.classList.toggle("active",journal);aircraftInfoNav.classList.toggle("active",info);window.scrollTo(0,0)}
 checklistNav.addEventListener("click",()=>showPage("checklist"));journalNav.addEventListener("click",()=>showPage("journal"));aircraftInfoNav.addEventListener("click",()=>{renderAircraftInfo();showPage("info")});infoAircraftSelect.addEventListener("change",renderAircraftInfo);
+
+
+// Additional Flight Deck tools: route sketch, checklist training, comparison,
+// preferences and portable flight-log exports. Existing journal/statistics stay intact.
+const comparePage=document.getElementById("comparePage"),settingsPage=document.getElementById("settingsPage");
+const compareNav=document.getElementById("compareNav"),settingsNav=document.getElementById("settingsNav");
+const originalShowPage=showPage;
+showPage=function(page){
+  if(page==="compare"||page==="settings"){
+    checklistPage.hidden=true;journalPage.hidden=true;aircraftInfoPage.hidden=true;
+    comparePage.hidden=page!=="compare";settingsPage.hidden=page!=="settings";
+    [checklistNav,journalNav,aircraftInfoNav,compareNav,settingsNav].forEach(b=>b.classList.remove("active"));
+    (page==="compare"?compareNav:settingsNav).classList.add("active");
+    if(page==="compare")renderCompare();
+    window.scrollTo(0,0);return;
+  }
+  comparePage.hidden=true;settingsPage.hidden=true;
+  originalShowPage(page);
+  [compareNav,settingsNav].forEach(b=>b.classList.remove("active"));
+};
+compareNav.addEventListener("click",()=>showPage("compare"));
+settingsNav.addEventListener("click",()=>showPage("settings"));
+
+// Route sketch uses airport coordinates already resolved by the flight planner.
+// It is deliberately labelled schematic and is not a navigation chart.
+function drawRouteMap(a,b,km,nm){
+  const panel=document.getElementById("routeMapPanel"),canvas=document.getElementById("routeMapCanvas");
+  const x1=90,x2=710,y1=145,y2=145;
+  const curve="M "+x1+" "+y1+" Q 400 15 "+x2+" "+y2;
+  const fmt=n=>Number(n).toFixed(2);
+  canvas.innerHTML='<svg viewBox="0 0 800 210" role="img" aria-label="Schematic flight route"><defs><pattern id="routeGrid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#29404f" stroke-width="1"/></pattern></defs><rect width="800" height="210" fill="url(#routeGrid)"/><path d="'+curve+'" fill="none" stroke="#68d9d0" stroke-width="3" stroke-dasharray="8 7"/><circle cx="'+x1+'" cy="'+y1+'" r="7" fill="#e8bb72"/><circle cx="'+x2+'" cy="'+y2+'" r="7" fill="#e8bb72"/><text x="'+x1+'" y="177" fill="#edf4f7" text-anchor="middle" font-size="14">'+escapeSvg(document.getElementById("origin").value.toUpperCase())+'</text><text x="'+x2+'" y="177" fill="#edf4f7" text-anchor="middle" font-size="14">'+escapeSvg(document.getElementById("destination").value.toUpperCase())+'</text><text x="400" y="74" fill="#68d9d0" text-anchor="middle" font-size="13">'+km.toLocaleString()+" km"+'</text></svg>';
+  document.getElementById("routeMapTitle").textContent=document.getElementById("origin").value.toUpperCase()+" → "+document.getElementById("destination").value.toUpperCase();
+  document.getElementById("routeMapSubtitle").textContent=a.name+" · "+b.name;
+  document.getElementById("routeMapDistance").textContent=km.toLocaleString()+" km · "+nm.toLocaleString()+" NM";
+  document.getElementById("routeMapNote").textContent=isFa?"نمایش شماتیک مسیر بر اساس مختصات فرودگاه‌هاست؛ نقشه ناوبری یا مسیر واقعی پرواز نیست. مختصات: "+fmt(a.lat)+", "+fmt(a.lon)+" → "+fmt(b.lat)+", "+fmt(b.lon):"Schematic airport-to-airport illustration only; not a navigation chart or actual cleared route.";
+  panel.hidden=false;
+}
+function escapeSvg(value){return String(value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;"}[ch]));}
+
+// Step-through checklist practice: displays one existing checklist row at a time.
+let trainingActive=false,trainingIndex=0;
+const trainingPanel=document.getElementById("trainingPanel");
+function trainingRows(){return Array.from(document.querySelectorAll("#phases .check"))}
+function refreshTraining(){
+ const rows=trainingRows();
+ rows.forEach((row,i)=>{row.classList.toggle("training-current",trainingActive&&i===trainingIndex);row.hidden=trainingActive&&i!==trainingIndex});
+ document.querySelectorAll("#phases .phase").forEach(phase=>{phase.hidden=trainingActive&&!phase.querySelector(".training-current")});
+ trainingPanel.hidden=!trainingActive;
+ document.getElementById("trainingStart").textContent=trainingActive?(isFa?"تمرین فعال است":"Training active"):(isFa?"حالت تمرین":"Training mode");
+ if(trainingActive&&rows.length){
+  const row=rows[trainingIndex];document.getElementById("trainingCounter").textContent=(isFa?"مورد ":"Item ")+(trainingIndex+1)+(isFa?" از ":" of ")+rows.length;
+  document.getElementById("trainingPrompt").textContent=row.querySelector(".action strong")?.textContent||"";
+  document.getElementById("trainingPrev").disabled=trainingIndex===0;document.getElementById("trainingNext").textContent=trainingIndex===rows.length-1?(isFa?"پایان":"Finish"):(isFa?"بعدی":"Next");
+ }else if(trainingActive){trainingActive=false;refreshTraining()}
+}
+document.getElementById("trainingStart").addEventListener("click",()=>{
+ if(!trainingActive){trainingActive=true;trainingIndex=0;}else trainingActive=false;
+ render();refreshTraining();
+});
+document.getElementById("trainingPrev").addEventListener("click",()=>{trainingIndex=Math.max(0,trainingIndex-1);refreshTraining()});
+document.getElementById("trainingNext").addEventListener("click",()=>{const n=trainingRows().length;if(trainingIndex>=n-1){trainingActive=false;render();}else trainingIndex++;refreshTraining()});
+document.getElementById("trainingExit").addEventListener("click",()=>{trainingActive=false;render();refreshTraining()});
+const baseRender=render;
+render=function(){baseRender();if(trainingActive){trainingIndex=Math.min(trainingIndex,Math.max(0,trainingRows().length-1));refreshTraining();}};
+
+// Aircraft comparison uses the existing aircraft profile dataset.
+const compareA=document.getElementById("compareAircraftA"),compareB=document.getElementById("compareAircraftB");
+aircraft.forEach((a,i)=>{[compareA,compareB].forEach(sel=>{const o=document.createElement("option");o.value=String(i);o.textContent=a[0];sel.append(o)})});
+compareA.value="0";compareB.value="2";
+function renderCompare(){
+ const ia=Number(compareA.value),ib=Number(compareB.value),a=aircraftInfoData[ia],b=aircraftInfoData[ib];
+ const fields=isFa?[["کلاس",0,0],["سرعت کروز",12,12],["برد",13,13],["ظرفیت",14,14],["موتور",15,15],["اولین پرواز",10,10]]:[["Class",0,0],["Cruise speed",4,4],["Range",5,5],["Seats",6,6],["Engine",7,7],["First flight",2,2]];
+ const host=document.getElementById("compareResults");host.innerHTML="";
+ const table=document.createElement("table");table.className="compare-table";
+ const header=document.createElement("tr");[isFa?"مشخصات":"SPECIFICATION",aircraft[ia][0],aircraft[ib][0]].forEach(v=>{const th=document.createElement("th");th.textContent=v;header.append(th)});table.append(header);
+ fields.forEach(([label,faIndex,enIndex])=>{const tr=document.createElement("tr");[label,isFa?a[faIndex]:a[enIndex],isFa?b[faIndex]:b[enIndex]].forEach(v=>{const td=document.createElement("td");td.textContent=v;tr.append(td)});table.append(tr)});
+ host.append(table);
+}
+compareA.addEventListener("change",renderCompare);compareB.addEventListener("change",renderCompare);
+
+// Preferences are local to this browser profile.
+const preferenceKey="fd-msfs-preferences-v1";
+function getPrefs(){try{return JSON.parse(localStorage.getItem(preferenceKey)||"{}")}catch(e){return {}}}
+function applyPrefs(){
+ const p=getPrefs();document.getElementById("themeSetting").value=p.theme||"dark";
+ document.getElementById("densitySetting").value=p.density||"comfortable";
+ document.getElementById("unitSetting").value=p.unit||"km";
+ document.body.classList.toggle("theme-light",p.theme==="light");
+ document.body.classList.toggle("density-compact",p.density==="compact");
+}
+["themeSetting","densitySetting","unitSetting"].forEach(id=>document.getElementById(id).addEventListener("change",()=>{
+ const p={theme:document.getElementById("themeSetting").value,density:document.getElementById("densitySetting").value,unit:document.getElementById("unitSetting").value};
+ localStorage.setItem(preferenceKey,JSON.stringify(p));applyPrefs();
+ document.getElementById("settingsSaved").textContent=isFa?"تنظیمات ذخیره شد.":"Settings saved on this device.";
+}));
+applyPrefs();
+
+// Portable flight history: CSV opens in Excel; JSON is a restorable backup.
+function downloadTextFile(name,content,type){
+ const blob=new Blob(["\uFEFF",content],{type});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=name;document.body.append(a);a.click();a.remove();URL.revokeObjectURL(url);
+}
+function csvCell(v){return '"'+String(v??"").replace(/"/g,'""')+'"'}
+document.getElementById("exportCsv").addEventListener("click",()=>{
+ const history=getFlightHistory(),headers=["origin","destination","aircraft","airline","flightNumber","date","distance_km","distance_nm","estimated_hours"];
+ const lines=[headers.join(","),...history.map(f=>[f.origin,f.destination,f.aircraft,f.airline,f.flightNumber,f.date,f.km,f.nm,f.hours].map(csvCell).join(","))];
+ downloadTextFile("flight-deck-logbook.csv",lines.join("\r\n"),"text/csv;charset=utf-8");
+});
+document.getElementById("exportJson").addEventListener("click",()=>downloadTextFile("flight-deck-backup.json",JSON.stringify({version:1,exportedAt:new Date().toISOString(),flights:getFlightHistory()},null,2),"application/json"));
+document.getElementById("printLogbook").addEventListener("click",()=>window.print());
+
+// Theme and compact-density presentation.
